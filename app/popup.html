@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Bootstrap 5 Example</title>
   <meta charset="utf-8">
@@ -8,31 +9,38 @@
   <link rel="stylesheet" href="popup.css" />
 
 </head>
+
 <body>
 
-<div class="container-fluid p-5 bg-primary text-white text-center">
-  <h1>WhatsApp File Sender</h1>
-  <p>Now you can send the messages to multiple users using this extension!</p> 
-</div>
-  
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-sm-12">
-      <h3>Enter Message or type the url of the file here:</h3>
-      <input class="form-control" id="wtName"/>
-    </div>
-    <div class="col-sm-12">
-      <h3>Enter Number </h3>
-     <select id="contactsDD" class="form-control">
-        <option>Loading...</option>
-     </select>
-    </div>
-    <div class="col-sm-12">
+  <div class="container-fluid p-5 bg-primary text-white text-center">
+    <h1>WhatsApp File Sender</h1>
+    <p>Now you can send the messages to multiple users using this extension!</p>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-12 mb3">
+        <label>Enter Number </label>
+        <select id="contactsDD" class="form-control">
+          <option>Loading</option>
+        </select>
+      </div>
+      <div class="col-sm-12 mb3">
+        <label>Enter Message:</label>
+        <textarea class="form-control" id="wtName"></textarea>
+      </div>
+      <div class="col-sm-12 mb3">
+        <label>Choose File To Upload:</label>
+        <input type="file" class="form-control" id="fileInput" accept="image/*" />
+        <label class="hidden" id="uploadLabel">Uploading....</label>
+      </div>
+      <div class="col-sm-12">
         <button class="btn btn-primary" id="send">Send</button>
+      </div>
     </div>
   </div>
-</div>
 
 </body>
 <script src="popup.js"></script>
+
 </html>

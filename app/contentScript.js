@@ -25,6 +25,21 @@ const sendDataToAPI = (API_NAME = '', payLoad = {}, method = 'POST') => {
             console.error(error); // Example: Logging the error to the console 
         });
 }
+
+const bs64ToBlob = (base64String) => {
+    const matches = base64String.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    const contentType = matches[1];
+    const base64Data = matches[2];
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    blob = new Blob([byteArray], { type: contentType });
+    return blob;
+}
+
 chrome.runtime.onMessage.addListener((response, sender) => {
     if (response.tabOpen) {
         sendContactsList();
@@ -36,13 +51,19 @@ chrome.runtime.onMessage.addListener((response, sender) => {
         // textBox.innerHTML = message;
         // textBox.dispatchEvent(event);
         // document.getElementsByClassName("_2xy_p epia9gcq")[0].click();
-        const payLoad = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": response.number,
-            "type": "text",
-            "text": response.text
+        let image;
+        if (response.bs64Img) {
+            image = bs64ToBlob(response.bs64Img);
         }
+        const payLoad = {
+            messaging_product: "whatsapp",
+            recipient_type: "individual",
+            to: response.number,
+            type: image ? 'image' : "text",
+            text: response.text,
+            image
+        }
+        console.log('pela', payLoad);
         sendDataToAPI(`https://graph.facebook.com/v18.0/${response.number}/messages`, payLoad);
     }
 })
